@@ -1,0 +1,3 @@
+[submodule "zaimpy"]
+	path = zaimpy
+	url = git@github.com:mursts/zaimpy.git
