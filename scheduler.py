@@ -33,20 +33,21 @@ def zaim_lunch_alert():
         params = {'start_date': today.strftime('%Y-%m-%d'),
                   'genre_id': genre_id}
 
-        push_device = None
-        pb = Pushbullet(pushbullet_token)
-        for device in pb.devices:
-            if device.model == target_device:
-                push_device = device
-                break
-        else:
-            raise ValueError('Device not found: ' + target_device)
-
         moeny_records = zaim.get_money_records(params)
         input_count = len(moeny_records)
 
         if input_count < 1:
+            push_device = None
+            pb = Pushbullet(pushbullet_token)
+            for device in pb.devices:
+                if device.model == target_device:
+                    push_device = device
+                    break
+            else:
+                raise ValueError('Device not found: ' + target_device)
+
             push = push_device.push_note('Zaim登録アラート', 'Zaimを登録！')
+            print(push)
 
     except(Exception) as e:
         print(e)
