@@ -28,6 +28,7 @@ def zaim_lunch_alert():
         genre_id = genre.get('id')
 
         today = datetime.today()
+        print(today.strftime('%Y-%m-%d'))
 
         params = {'start_date': today.strftime('%Y-%m-%d'),
                   'genre_id': genre_id}
