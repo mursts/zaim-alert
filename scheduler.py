@@ -9,7 +9,8 @@ from pushbullet import Pushbullet
 
 sched = BlockingScheduler()
 
-TARGET_GENRE = '会社ランチ'
+# 会社ランチ, 会社ランチ(QuickPay)
+TARGET_GENRE_ID = ['6993487', '10763064']
 
 pushbullet_token = os.environ.get('PUSHBULLET_TOKEN', "")
 target_device = os.environ.get('PUSHBULLET_TARGET_DEVICE', "")
@@ -36,18 +37,17 @@ def zaim_lunch_alert():
     try:
         zaim = Zaim(consumer_key, consumer_secret, access_token_key, access_token_secret)
 
-        genre = zaim.get_genre_by_name(TARGET_GENRE)
-        genre_id = genre.get('id')
-
         today = datetime.today()
 
-        params = {'start_date': today.strftime('%Y-%m-%d'),
-                  'genre_id': genre_id}
+        params = {'start_date': today.strftime('%Y-%m-%d')}
 
-        moeny_records = zaim.get_money_records(params)
-        input_count = len(moeny_records)
+        money_records = zaim.get_money_records(params)
 
-        if input_count < 1:
+        for record in money_records:
+            genre_id = record.get('genre_id')
+            if genre_id in TARGET_GENRE_ID:
+                break
+        else:
             device = get_device()
             push = device.push_note('Zaim登録アラート', 'Zaimを登録！')
 
