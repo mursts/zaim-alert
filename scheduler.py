@@ -21,8 +21,6 @@ def get_device():
     for device in pb.devices:
         if device.model == target_device:
             return device
-            # push_device = device
-            # break
     else:
         raise ValueError('Device not found: ' + target_device)
 
@@ -49,9 +47,9 @@ def zaim_lunch_alert():
                 break
         else:
             device = get_device()
-            push = device.push_note('Zaim登録アラート', 'Zaimを登録！')
+            device.push_note('Zaim登録アラート', 'Zaimを登録！')
 
-    except(Exception) as e:
+    except Exception as e:
         print(e)
 
 sched.start()
