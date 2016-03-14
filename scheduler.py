@@ -3,9 +3,11 @@
 
 import os
 from datetime import datetime
+
 from apscheduler.schedulers.blocking import BlockingScheduler
-from zaimapi import Zaim
 from pushbullet import Pushbullet
+
+from zaimapi import Zaim
 
 sched = BlockingScheduler()
 
