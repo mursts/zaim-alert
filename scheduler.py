@@ -36,7 +36,6 @@ def zaim_lunch_alert():
         zaim = Zaim(consumer_key, consumer_secret, access_token_key, access_token_secret)
 
         today = datetime.today()
-        print(today.strftime('%Y-%m-%d'))
 
         params = {'start_date': today.strftime('%Y-%m-%d')}
 
