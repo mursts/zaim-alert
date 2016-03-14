@@ -42,7 +42,7 @@ def zaim_lunch_alert():
         money_records = zaim.get_money_records(params)
 
         for record in money_records:
-            genre_id = record.get('genre_id')
+            genre_id = str(record.get('genre_id'))
             if genre_id in TARGET_GENRE_ID:
                 break
         else:
