@@ -11,7 +11,6 @@ from zaimapi import Zaim
 
 sched = BlockingScheduler()
 
-# 会社ランチ, 会社ランチ(QuickPay)
 TARGET_GENRE_ID = ['6993487', '10763064', '10914455']
 
 pushbullet_token = os.environ.get('PUSHBULLET_TOKEN', "")
