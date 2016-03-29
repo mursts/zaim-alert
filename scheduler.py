@@ -29,9 +29,9 @@ def get_device():
 @sched.scheduled_job('cron', day_of_week='mon-fri', hour=12, minute=45)
 def zaim_lunch_alert():
     consumer_key = os.environ.get("ZAIM_CONSUMER_KEY", None)
-    consumer_secret = os.environ.get("ZAIM_CONSUMER_SECRET", "")
-    access_token_key = os.environ.get("ZAIM_ACCESS_TOKEN_KEY", "")
-    access_token_secret = os.environ.get("ZAIM_ACCESS_TOKEN_SECRET", "")
+    consumer_secret = os.environ.get("ZAIM_CONSUMER_SECRET", None)
+    access_token_key = os.environ.get("ZAIM_ACCESS_TOKEN_KEY", None)
+    access_token_secret = os.environ.get("ZAIM_ACCESS_TOKEN_SECRET", None)
 
     try:
         zaim = Zaim(consumer_key, consumer_secret, access_token_key, access_token_secret)
