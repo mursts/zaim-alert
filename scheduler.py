@@ -1,11 +1,12 @@
 #! /usr/bin/env python
 # coding: utf-8
 
+import json
 import os
+import requests
 from datetime import datetime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-from pushbullet import Pushbullet
 
 from zaimapi import Zaim
 
@@ -13,17 +14,11 @@ sched = BlockingScheduler()
 
 TARGET_GENRE_ID = ['6993487', '10763064', '10914455']
 
-pushbullet_token = os.environ.get('PUSHBULLET_TOKEN', "")
-target_device = os.environ.get('PUSHBULLET_TARGET_DEVICE', "")
 
-
-def get_device():
-    pb = Pushbullet(pushbullet_token)
-    for device in pb.devices:
-        if device.model == target_device:
-            return device
-    else:
-        raise ValueError('Device not found: ' + target_device)
+def notification():
+    url = os.environ.get('SLACK_WEBHOOK_URL', None)
+    payload = {'payload': json.dumps({'text': '@mursts: zaimに:bento:の登録を忘れてますよ:face_with_rolling_eyes:'})}
+    requests.post(url, data=payload)
 
 
 @sched.scheduled_job('cron', day_of_week='mon-fri', hour=12, minute=45)
@@ -47,8 +42,7 @@ def zaim_lunch_alert():
             if genre_id in TARGET_GENRE_ID:
                 break
         else:
-            device = get_device()
-            device.push_note('Zaim登録アラート', 'Zaimを登録！')
+            notification()
 
     except Exception as e:
         print(e)
