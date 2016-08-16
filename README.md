@@ -1,6 +1,6 @@
 # Zaim-Alert
 
-Zaimにランチ代の登録忘れがあればPushbulletに通知します
+Zaimにランチ代の登録忘れがあればslackに通知します
 
 ## 環境
 
