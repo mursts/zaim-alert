@@ -12,7 +12,7 @@ from zaimapi import Zaim
 
 sched = BlockingScheduler()
 
-TARGET_GENRE_ID = ['6993487', '10763064', '10914455']
+TARGET_GENRE_ID = ['6993487', '10763064', '10914455', '12506523']
 
 
 def notification():
