@@ -17,7 +17,12 @@ TARGET_GENRE_ID = ['6993487', '10763064', '10914455', '12506523']
 
 def notification():
     url = os.environ.get('SLACK_WEBHOOK_URL', None)
-    payload = {'payload': json.dumps({'text': '@mursts: zaimに:bento:の登録を忘れてますよ:face_with_rolling_eyes:'})}
+    text = {'text': '@mursts: zaimに:bento:の登録を忘れてますよ:face_with_rolling_eyes:',
+            'attachments': [{'color': '#36a64f',
+                             'title': '登録方法',
+                             'text': '/zaim {category} amount\n■category\n  1: nanaco\n  2: Cach\n  3: QuickPay\n  4: Bento',
+                             'fields': [{'short': False}]}]}
+    payload = {'payload': json.dumps(text)}
     requests.post(url, data=payload)
 
 
