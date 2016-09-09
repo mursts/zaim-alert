@@ -25,12 +25,18 @@ def notification():
 
 class AlertHandler(webapp2.RequestHandler):
     def post(self):
+        today = datetime.now() + timedelta(hours=9)
+
+        # 土曜、日曜は無視
+        if today.weekday() in [5, 6]:
+            return
+
+        today.weekday()
+
         api = zaim.Api(consumer_key=config.consumer_key, consumer_secret=config.consumer_secret,
                        access_token=config.access_token_key, access_token_secret=config.access_token_secret)
 
         genres = [genre['id'] for genre in api.genre()['genres'] if genre['category_id'] == config.category]
-
-        today = datetime.now() + timedelta(hours=9)
 
         money_list = api.money(mapping=1,
                                mode='payment',
