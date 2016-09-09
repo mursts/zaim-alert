@@ -4,7 +4,9 @@ consumer_secret = ''
 access_token_key = ''
 access_token_secret = ''
 
+# slack
 slack_imcoming_webhook_url = ''
+slack_slash_command_token = ''
 
 # zaim target category
 category = 18781772

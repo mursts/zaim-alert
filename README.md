@@ -2,6 +2,8 @@
 
 Zaimにランチ代の登録忘れがあればslackに通知します。平日の12:45に実行
 
+Zaimに登録するための`Slash Commands`も追加
+
 ## 環境
 
 - Python 2.7
