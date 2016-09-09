@@ -1,0 +1,10 @@
+# zaim api
+consumer_key = ''
+consumer_secret = ''
+access_token_key = ''
+access_token_secret = ''
+
+slack_imcoming_webhook_url = ''
+
+# zaim target category
+category = 18781772
