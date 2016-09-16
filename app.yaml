@@ -5,10 +5,17 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+# cron
 - url: /task/alert
   script: alert.app
   login: admin
 
+# task queue
+- url: /task/messaging
+  script: worker.app
+  login: admin
+
+# slash command
 - url: /slash
   script: slash.app
 
