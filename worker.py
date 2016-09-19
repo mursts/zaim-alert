@@ -13,10 +13,7 @@ import zaim
 from model import Message
 
 
-def response_message(response_url, text):
-    payload = {'response_type': 'in_channel',
-               'text': text}
-
+def response_message(response_url, payload):
     result = urlfetch.fetch(url=response_url,
                             payload=json.dumps(payload),
                             method=urlfetch.POST)
@@ -52,11 +49,18 @@ class WorkerHandler(webapp2.RequestHandler):
                                    date=today.strftime('%Y-%m-%d'))
 
             logging.debug(response)
-            response_message(msg.response_url, 'added.:+1:')
+            payload = {'response_type': 'in_channel',
+                       'text': 'added.:+1:',
+                       'attachments': [{'color': '#36a64f',
+                                       'text': 'Amount: {}, Category: {}'.format(msg.amount, msg.genre),
+                                       'fields': [{'short': False}]}]}
+            response_message(msg.response_url, payload)
 
         except Exception, e:
             logging.error(e.message)
-            response_message(msg.response_url, e.message)
+            payload = {'response_type': 'in_channel',
+                       'text': e.message}
+            response_message(msg.response_url, payload)
 
 app = webapp2.WSGIApplication([
     ('/task/messaging', WorkerHandler)
