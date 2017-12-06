@@ -5,6 +5,9 @@ import json
 from datetime import datetime, timedelta
 
 import webapp2
+from google.appengine.ext import ndb
+
+from model import Receive # required
 
 import config
 import requests
@@ -27,11 +30,11 @@ class AlertHandler(webapp2.RequestHandler):
     def post(self):
         today = datetime.now() + timedelta(hours=9)
 
-        # 土曜、日曜は無視
-        if today.weekday() in [5, 6]:
-            return
+        receive_key = ndb.Key("Receive", today.strftime('%Y-%m-%d'))
+        receive = receive_key.get()
 
-        today.weekday()
+        if receive is None:
+            return
 
         api = zaim.Api(consumer_key=config.consumer_key, consumer_secret=config.consumer_secret,
                        access_token=config.access_token_key, access_token_secret=config.access_token_secret)

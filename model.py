@@ -4,6 +4,12 @@
 import json
 import logging
 
+from google.appengine.ext import ndb
+
+
+class Receive(ndb.Model):
+    pass
+
 
 class Message(object):
     token = ""

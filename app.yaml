@@ -19,6 +19,16 @@ handlers:
 - url: /slash
   script: slash.app
 
+# receive
+- url: /receive
+  script: receiver.app
+
 libraries:
 - name: webapp2
   version: "2.5.2"
+
+skip_files:
+- ^.*\.iml
+- ^\.idea
+- ^\.git
+- ^(.*/)?.*\.pyc$
