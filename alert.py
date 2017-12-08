@@ -27,7 +27,7 @@ def notification():
 
 
 class AlertHandler(webapp2.RequestHandler):
-    def post(self):
+    def get(self):
         today = datetime.now() + timedelta(hours=9)
 
         receive_key = ndb.Key("Receive", today.strftime('%Y-%m-%d'))
