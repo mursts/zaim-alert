@@ -10,6 +10,11 @@ from model import Receive
 
 class ReceiveHandler(webapp2.RequestHandler):
     def get(self):
+
+        header = self.request.headers.get("X-LUNCH-ALERT", None)
+        if header is None:
+            return
+
         self.response.write("Receive Handler.")
 
         today = datetime.datetime.now() + datetime.timedelta(hours=9)
