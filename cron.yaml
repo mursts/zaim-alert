@@ -3,3 +3,8 @@ cron:
   url: /task/alert
   schedule: every day 12:45
   timezone: Asia/Tokyo
+
+- description: monthly report
+  url: /task/report
+  schedule: 28,29,30,31 of month 17:55
+  timezone: Asia/Tokyo

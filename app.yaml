@@ -10,6 +10,10 @@ handlers:
   script: alert.app
   login: admin
 
+- url: /task/report
+  script: report.app
+  login: admin
+
 # task queue
 - url: /task/messaging
   script: worker.app
@@ -26,6 +30,8 @@ handlers:
 libraries:
 - name: webapp2
   version: "2.5.2"
+- name: pytz
+  version: "latest"
 
 skip_files:
 - ^.*\.iml
