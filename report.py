@@ -17,10 +17,11 @@ import zaim
 class ReportHandler(webapp2.RequestHandler):
     def get(self):
 
-        if not is_last_day_of_month():
+        today = datetime.now(tz=timezone("Asia/Tokyo"))
+
+        if not is_last_day_of_month(today):
             return
 
-        today = datetime.now(tz=timezone("Asia/Tokyo"))
         first_date = today.replace(day=1)
         _, month_days = calendar.monthrange(today.year, today.month)
         last_date = today.replace(day=month_days)
@@ -34,25 +35,37 @@ class ReportHandler(webapp2.RequestHandler):
                                end_date=last_date.strftime('%Y-%m-%d'))
 
         total_amount = 0
-        transfer_amount = 0
+        payment_amount = 0
+        report_list = []
 
         for money in money_list.get('money', []):
-            total_amount += money.get('amount', 0)
-            # 10763064:QuickPay, 15993748:COMP, 10914455:nanaco
-            if money.get('genre_id') in [10763064, 15993748, 10914455]:
-                transfer_amount += money.get('amount', 0)
+            amount = money.get('amount', 0)
+
+            s = "{}:  {}".format(money.get('date')[5:], amount)
+            total_amount += amount
+
+            if is_payment_genre(money.get('genre_id')):
+                payment_amount += amount
+                s += "  *"
+
+            report_list.append(s)
+
+        report_list.sort()
+
         logging.debug(total_amount)
-        logging.debug(transfer_amount)
+        logging.debug(payment_amount)
 
         text = u"""@mursts
-{} のLunchレポート
+{} のレポート
+
+{}
 
 *Total*
   `{} 円`
 
 *うち振込分*
   `{} 円`
-""".format(today.strftime('%Y/%m'), total_amount, transfer_amount)
+""".format(today.strftime('%Y/%m'), "\n".join(report_list), total_amount, payment_amount)
 
         url = config.slack_imcoming_webhook_url
 
@@ -62,9 +75,16 @@ class ReportHandler(webapp2.RequestHandler):
         logging.debug(r.content)
 
 
-def is_last_day_of_month():
-    next_day = datetime.now(tz=timezone('Asia/Tokyo')) + timedelta(days=1)
+def is_last_day_of_month(d):
+    next_day = d + timedelta(days=1)
     return next_day.day == 1
+
+
+def is_payment_genre(genre_id):
+    # 10763064:QuickPay
+    # 15993748:COMP
+    # 10914455:nanaco
+    return genre_id in [10763064, 15993748, 10914455]
 
 
 app = webapp2.WSGIApplication([
