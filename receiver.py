@@ -30,28 +30,27 @@ class ReceiveAPIHandler(webapp2.RequestHandler):
     def get(self):
         params = self.request.GET
 
-        if 'date' not in params:
+        try:
+            if 'date' not in params:
+                raise ValueError
+
+            d = params['date']
+
+            if not rgx.match(d):
+                raise ValueError
+
+            receive_key = ndb.Key("Receive", d)
+            receive = receive_key.get()
+
+            if receive is None:
+                raise ValueError
+
+            self.response.status = 200
+            self.response.write(params['date'])
+
+        except ValueError:
             self.response.status = 400
             self.response.write('Bad Request')
-            return
-
-        d = params['date']
-
-        if not rgx.match(d):
-            self.response.status = 400
-            self.response.write('Bad Request')
-            return
-
-        receive_key = ndb.Key("Receive", d)
-        receive = receive_key.get()
-
-        if receive is None:
-            self.response.status = 400
-            self.response.write('Bad Request')
-            return
-
-        self.response.status = 200
-        self.response.write(params['date'])
 
 
 app = webapp2.WSGIApplication([
