@@ -26,6 +26,8 @@ handlers:
 # receive
 - url: /receive
   script: receiver.app
+- url: /api/receive
+  script: receiver.app
 
 libraries:
 - name: webapp2
