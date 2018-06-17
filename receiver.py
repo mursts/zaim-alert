@@ -23,9 +23,6 @@ class ReceiveHandler(webapp2.RequestHandler):
         receive.put()
 
 
-rgx = re.compile('\d{4}-\d{2}-\d{2}')
-
-
 class ReceiveAPIHandler(webapp2.RequestHandler):
     def get(self):
         params = self.request.GET
@@ -35,9 +32,6 @@ class ReceiveAPIHandler(webapp2.RequestHandler):
                 raise ValueError
 
             d = params['date']
-
-            if not rgx.match(d):
-                raise ValueError
 
             receive_key = ndb.Key("Receive", d)
             receive = receive_key.get()
