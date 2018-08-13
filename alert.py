@@ -39,16 +39,11 @@ class AlertHandler(webapp2.RequestHandler):
         api = zaim.Api(consumer_key=config.consumer_key, consumer_secret=config.consumer_secret,
                        access_token=config.access_token_key, access_token_secret=config.access_token_secret)
 
-        genres = [genre['id'] for genre in api.genre()['genres'] if genre['category_id'] == config.category]
+        money_list = api.money(mode='payment',
+                               start_date=today.strftime('%Y-%m-%d'),
+                               category_id=config.category)
 
-        money_list = api.money(mapping=1,
-                               mode='payment',
-                               start_date=today.strftime('%Y-%m-%d'))
-
-        for money in money_list.get('money', []):
-            if money['genre_id'] in genres:
-                break
-        else:
+        if len(money_list.get('money', [])) < 1:
             notification()
 
 
