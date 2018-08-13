@@ -84,7 +84,8 @@ def is_payment_genre(genre_id):
     # 10763064:QuickPay
     # 15993748:COMP
     # 10914455:nanaco
-    return genre_id in [10763064, 15993748, 10914455]
+    # 19777440:CalorieMate
+    return genre_id in [10763064, 15993748, 10914455, 19777440]
 
 
 app = webapp2.WSGIApplication([
