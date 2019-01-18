@@ -2,3 +2,5 @@
 .venv
 ds
 WEB_INF
+.idea
+__pycache__

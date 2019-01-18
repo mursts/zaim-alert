@@ -24,6 +24,7 @@ ds_client = get_client()
 def receive_hander():
     header = request.headers.get('X-LUNCH-ALERT', None)
     if header is None:
+        logger.debug('invalid http header')
         return '', 200
 
     jst = datetime.timezone(datetime.timedelta(hours=+9), 'JST')
@@ -39,11 +40,13 @@ def receive_hander():
 
 @receive.route('/api/receive')
 def api_receive():
+    """For Google App Script"""
     params = request.args
 
     d = params.get('date')
 
     if d is None:
+        logger.error('')
         return 'Bad Request', 400
 
     receive_key = ds_client.key('Receive', d)

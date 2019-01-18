@@ -54,7 +54,10 @@ def alert_handler():
     receive = ds_client.get(receive_key)
 
     if receive is None:
+        logger.debug('registerd.')
         return 'OK'
+
+    logger.debug('missed input to zaim')
 
     money_list = api.money(mode='payment',
                            start_date=today.strftime('%Y-%m-%d'),
