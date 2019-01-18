@@ -1,4 +1,4 @@
+flask
 requests
-requests-oauthlib
-requests-toolbelt
-git+https://github.com/mursts/zaim
+google-cloud-datastore
+zaim

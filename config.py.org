@@ -10,3 +10,4 @@ slack_slash_command_token = ''
 
 # zaim target category
 category = 18781772
+genre_cash = 6993487
