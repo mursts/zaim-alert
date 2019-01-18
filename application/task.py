@@ -29,6 +29,20 @@ api = zaim.Api(consumer_key=config.consumer_key,
                access_token_secret=config.access_token_secret)
 
 
+def post_to_slack(payload):
+    url = config.slack_imcoming_webhook_url
+
+    if url == '':
+        return
+
+    payload = {'payload': payload}
+
+    r = requests.post(url, data=payload)
+
+    logger.debug(r.status_code)
+    logger.debug(r.content)
+
+
 @task.route('/alert')
 def alert_handler():
     jst = timezone(timedelta(hours=+9), 'JST')
@@ -46,12 +60,9 @@ def alert_handler():
                            start_date=today.strftime('%Y-%m-%d'),
                            category_id=config.category)
 
-    if config.slack_imcoming_webhook_url != '' and len(money_list.get('money', [])) < 1:
-        url = config.slack_imcoming_webhook_url
+    if len(money_list.get('money', [])) < 1:
         text = {'text': '@mursts: zaimに:bento:の登録を忘れてますよ:face_with_rolling_eyes:'}
-
-        payload = {'payload': json.dumps(text)}
-        requests.post(url, data=payload)
+        post_to_slack(json.dumps(text))
 
     return 'OK'
 
@@ -107,12 +118,7 @@ def report_handler():
   `{} 円`
 """.format(today.strftime('%Y/%m'), "\n".join(report_list), total_amount, payment_amount)
 
-    url = config.slack_imcoming_webhook_url
-
-    payload = {'payload': json.dumps({'text': text})}
-    r = requests.post(url, data=payload)
-    logger.debug(r.status_code)
-    logger.debug(r.content)
+    post_to_slack(json.dumps({'text': text}))
 
     return 'OK'
 
